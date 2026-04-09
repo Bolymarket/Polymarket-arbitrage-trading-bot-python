@@ -28,463 +28,139 @@ If you're interested in collaboration or have any questions, feel free to reach 
 ## If you'd like, I can show you a profitable bot in action through a meeting.
 
 
-## 🎯 Overview
-
-This bot automatically trades Polymarket's 15-minute binary markets (e.g., "BTC Up/Down 15m") using a sophisticated hedging strategy. It monitors multiple markets concurrently, enters positions when prices drop below thresholds, maintains balanced hedges, and automatically redeems winning positions when markets resolve.
-
-### Key Features
-
-- **Hedged Arbitrage Strategy**: Buys both YES and NO tokens to maintain risk-neutral positions
-- **Multi-Market Support**: Trades multiple markets concurrently (BTC, ETH, SOL, etc.)
-- **Automated Entry/Exit**: Flexible entry with strict alternation for hedging
-- **Dynamic Thresholds**: Calculates optimal entry prices based on previous fills
-- **State Persistence**: Maintains trading state across restarts
-- **Automated Redemption**: Automatically redeems winning positions from resolved markets
-- **Risk Management**: SumAvg guard, position limits, drawdown protection
-- **Performance Optimized**: Fire-and-forget orders, adaptive polling, debounced state saves
-
-## 🏗️ Architecture
-
-### Technology Stack
-
-- **Runtime**: Node.js with TypeScript
-- **Language**: TypeScript 5.9+ (strict mode)
-- **Blockchain**: Polygon (Ethereum-compatible L2)
-- **APIs**: 
-  - Polymarket CLOB Client (`@polymarket/clob-client`) - Order execution
-  - Polymarket Gamma API - Market data and token IDs
-- **Web3**: Ethers.js v6 for blockchain interactions
-- **Logging**: Custom structured logger with file output
-
-### System Flow
-
-```
-Market Price Polling → Entry Detection → Buy Execution → State Update
-                                                              ↓
-Hedge Completion → Position Redemption → PnL Recording
-```
-
-## 📦 Installation
-
-### Prerequisites
-
-- **Node.js** 18+ and npm
-- **TypeScript** 5.9+
-- **Polygon wallet** with USDC for trading
-- **Private key** for wallet authentication
-
-### Setup
-
-1. **Clone or navigate to the project**
-   ```bash
-   cd Polymarket-Trading-Bot-Gabagool
-   ```
-
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
-
-3. **Configure environment variables**
-   ```bash
-   cp .env.example .env
-   ```
-   
-   Edit `.env` with your configuration:
-   ```env
-   # Wallet Configuration (REQUIRED)
-   PRIVATE_KEY=your_private_key_here
-   
-   # Market Selection
-   TRADING_MARKETS=btc,eth,sol  # Comma-separated markets
-   
-   # Entry Parameters
-   ENTRY_THRESHOLD=0.499  # Initial entry threshold
-   REVERSAL_DELTA=0.020  # Price reversal delta
-   
-   # Position Sizing
-   MAX_BUYS_PER_SIDE=4  # Maximum buys per side
-   SHARES_PER_ORDER=5  # Shares per buy
-   MAX_SUM_AVG=0.98  # Maximum sumAvg for profitability
-   
-   # Order Execution
-   ORDER_TICK_SIZE=0.01
-   PRICE_BUFFER=0.03  # 3 cents buffer
-   ASYNC_ORDER_EXECUTION=true
-   
-   # Performance
-   POLL_INTERVAL_MS=200  # Base polling interval
-   ADAPTIVE_POLLING=true
-   
-   # Risk Management
-   MAX_DRAWDOWN_PERCENT=0  # 0 = disabled
-   MIN_BALANCE_USDC=2
-   
-   # Bot Control
-   BOT_MIN_USDC_BALANCE=1
-   WAIT_FOR_NEXT_MARKET_START=true
-   
-   # API Configuration
-   CHAIN_ID=137  # Polygon mainnet
-   CLOB_API_URL=https://clob.polymarket.com
-   
-   # Logging
-   LOG_DIR=logs
-   LOG_FILE_PREFIX=bot
-   DEBUG=false
-   ```
-
-4. **Initialize credentials**
-   On first run, the bot will automatically create API credentials using your `PRIVATE_KEY`.
-   Credentials are saved to `src/data/credential.json`.
-
-## ⚙️ Configuration
-
-### Environment Variables
-
-| Variable | Type | Default | Description |
-|----------|------|---------|-------------|
-| `PRIVATE_KEY` | string | **required** | Private key of trading wallet |
-| `TRADING_MARKETS` | string | `btc` | Comma-separated markets (e.g., "btc,eth,sol") |
-| `ENTRY_THRESHOLD` | number | `0.499` | Initial entry threshold |
-| `REVERSAL_DELTA` | number | `0.020` | Price reversal delta for buy triggers |
-| `MAX_BUYS_PER_SIDE` | number | `4` | Maximum buys per side |
-| `SHARES_PER_ORDER` | number | `5` | Shares per buy |
-| `MAX_SUM_AVG` | number | `0.98` | Maximum sumAvg to maintain profit |
-| `ORDER_TICK_SIZE` | string | `0.01` | Price precision |
-| `PRICE_BUFFER` | number | `0.03` | Price buffer in cents |
-| `ASYNC_ORDER_EXECUTION` | boolean | `true` | Don't wait for order confirmation |
-| `POLL_INTERVAL_MS` | number | `200` | Base polling interval (ms) |
-| `ADAPTIVE_POLLING` | boolean | `true` | Enable adaptive polling |
-| `MAX_DRAWDOWN_PERCENT` | number | `0` | Stop if losses exceed % (0 = disabled) |
-| `MIN_BALANCE_USDC` | number | `2` | Minimum balance before stopping |
-| `BOT_MIN_USDC_BALANCE` | number | `1` | Minimum USDC balance to start |
-| `CHAIN_ID` | number | `137` | Blockchain chain ID (137 = Polygon) |
-| `DEBUG` | boolean | `false` | Enable debug logging |
-
-### Trading Strategy Parameters
-
-- **Threshold**: Initial entry price threshold. Bot enters when either YES or NO drops below this value.
-- **Reversal Delta**: Price movement required to trigger a reversal-based buy (default: 0.020 = 2 cents).
-- **Max Buys Per Side**: Maximum number of buy orders per side (YES/NO) before hedge completes.
-- **Shares Per Side**: Number of shares to buy per order.
-- **Max SumAvg**: Maximum acceptable sum of average costs (avgYES + avgNO). Values < 1.0 are profitable.
-
-## 🚀 Usage
-
-### Starting the Bot
-
-```bash
-# Start trading bot
-npm start
-
-# Or using ts-node directly
-ts-node src/index.ts
-```
-
-The bot will:
-1. Initialize API credentials
-2. Approve USDC allowances
-3. Wait for minimum balance
-4. Optionally wait for next 15-minute market boundary
-5. Start trading loop with adaptive polling
 
-### Automated Redemption
-
-Run the redemption worker separately to automatically redeem winning positions:
-
-```bash
-# Run redemption worker (continuous loop)
-ts-node src/redeem-holdings.ts
+# 1. Polymarket Endcycle Sniper bot (Introduction)
 
-# Run once
-ts-node src/redeem-holdings.ts --once
-
-# Dry run
-ts-node src/redeem-holdings.ts --dry-run
-```
+Polymarket Endcycle Sniper Bot is an automated trading system designed to monitor short-duration prediction markets and execute high-probability trades near the end of each 5-minute epoch. It connects to the orderbook in real time, triggers buys when prices exceed a configured threshold (e.g., 0.95), manages risk with optional exits or hedging, and redeems winning positions automatically after market resolution. 🚀📈
+<img width="1098" height="728" alt="polymarket-endcycle-sniper-bot" src="https://github.com/user-attachments/assets/f2f83308-c9cd-4c71-9cf6-10fcbe8e1e63" />
 
-### Manual Redemption
-
-```bash
-# Check and redeem from holdings
-ts-node src/auto-redeem.ts
-
-# Check specific market
-ts-node src/auto-redeem.ts --check <conditionId>
-
-# Redeem from API
-ts-node src/auto-redeem.ts --api --max 500
-```
-
-### Balance Logging
-
-```bash
-# Log balance periodically
-npm run balance:log
-
-# Run once
-ts-node src/balance-logger.ts --once
-```
-
-## 🔧 Technical Details
-
-### Trading Strategy
-
-#### 1. Entry Strategy (Flexible Entry)
-- After hedge completion, bot resets and waits for new entry
-- **First buy**: Selects whichever token (YES/NO) drops below `ENTRY_THRESHOLD`
-- Flexible entry allows better timing by choosing the better entry point
-
-#### 2. Hedging Strategy (Strict Alternation)
-- After first buy, bot **always alternates** to the opposite side
-- Maintains hedge balance by buying both sides
-- Tracks lowest price seen (`tempPrice`) for each token
-
-#### 3. Buy Triggers
-
-**a) Depth-Based Buy (Immediate)**
-- Triggers when price drops 5% below `tempPrice`
-- Catches deep discounts immediately
-
-**b) Second Side Buy (Immediate)**
-- After first buy, calculates dynamic threshold: `1 - firstBuyPrice + boost`
-- Buys second side immediately when price ≤ `(dynamicThreshold - buffer)`
-- No reversal wait - immediate execution for speed
-
-**c) Reversal-Based Buy (Traditional)**
-- Triggers when price reverses: `price > (tempPrice + REVERSAL_DELTA)`
-- Only used if immediate buys didn't trigger
-
-#### 4. Profitability Guard (sumAvg)
-- Calculates weighted average cost: `avgYES + avgNO = sumAvg`
-- Only allows buys if `sumAvg <= MAX_SUM_AVG` (default: 0.98)
-- **FIXED**: Now properly prevents unprofitable trades by returning null when sumAvg would exceed limit
-
-#### 5. Position Limits
-- Maximum buys per side: `MAX_BUYS_PER_SIDE` (default: 4)
-- Shares per buy: `SHARES_PER_ORDER` (default: 5)
-- Total max positions: `4 YES buys × 5 shares + 4 NO buys × 5 shares = 40 shares total`
-
-#### 6. Hedge Completion
-- Hedge completes when **both sides** reach `MAX_BUYS_PER_SIDE`
-- Bot resets tracking state and waits for next entry opportunity
-
-### State Management
-
-The bot maintains two types of state:
-
-1. **Persistent State** (`src/data/copytrade-state.json`):
-   - Tracks positions per market slug
-   - Records quantities, costs, buy counts, averages
-   - Includes metadata (conditionId, slug, market, upIdx, downIdx)
-   - **FIXED**: Data directory is now automatically created if it doesn't exist
-
-2. **In-Memory Tracking** (resets on restart):
-   - Tracks current token being monitored
-   - Tracks lowest price seen (`tempPrice`)
-   - Tracks hedge status and buy attempts
-
-### Performance Optimizations
-
-- **Debounced State Saving**: Batches rapid state updates (50ms debounce)
-- **Fire-and-Forget Orders**: Don't wait for order confirmation (faster execution)
-- **Adaptive Polling**: Speeds up when opportunities detected, slows down when idle
-- **Stale Order Cancellation**: Cancels orders older than 30 seconds
-- **Dynamic Price Buffer**: Adjusts buffer based on sumAvg (more aggressive when needed)
-
-### Security Features
-
-- **Credential Management**: Secure API key storage in `src/data/credential.json`
-- **Allowance Control**: Automatic USDC approval management
-- **Balance Validation**: Pre-order balance checks prevent over-trading
-- **Error Handling**: Comprehensive error handling with graceful degradation
-- **Private Key Security**: Uses environment variables (never hardcoded)
-
-## 📁 Project Structure
-
-```
-Polymarket-Trading-Bot-Gabagool/
-├── src/
-│   ├── index.ts                 # Main bot entry point
-│   ├── auto-redeem.ts           # Automated redemption script
-│   ├── redeem.ts                # Manual redemption script
-│   ├── redeem-holdings.ts       # Redemption worker (records PnL)
-│   ├── balance-logger.ts        # Periodic balance logging
-│   ├── data/                    # Data storage (auto-created)
-│   │   ├── credential.json      # API credentials (auto-generated)
-│   │   ├── copytrade-state.json # Trading state
-│   │   └── token-holding.json  # Token holdings database
-│   ├── order-builder/           # Trading strategy implementation
-│   │   ├── copytrade.ts        # Main bot logic (CopytradeArbBot class)
-│   │   ├── gabagool.ts         # Compatibility shim (re-exports copytrade)
-│   │   ├── helpers.ts          # Order conversion utilities
-│   │   └── types.ts            # Type definitions
-│   ├── config/                  # Configuration management
-│   │   └── index.ts            # Config loader
-│   ├── providers/               # API clients
-│   │   ├── clobclient.ts       # CLOB API client
-│   │   └── rpcProvider.ts      # RPC provider
-│   ├── security/                # Security utilities
-│   │   ├── allowance.ts        # Token approval management
-│   │   └── createCredential.ts # Credential generation
-│   └── utils/                   # Utility functions
-│       ├── balance.ts          # Balance checking
-│       ├── holdings.ts         # Holdings management (FIXED: auto-creates data dir)
-│       ├── redeem.ts           # Redemption logic
-│       ├── logger.ts           # Logging utility
-│       └── console-file.ts     # File logging setup
-├── package.json
-├── tsconfig.json
-└── README.md
-```
-
-## 🔌 API Integration
-
-### Polymarket CLOB Client
-
-The bot uses the official `@polymarket/clob-client` for order execution:
-
-```typescript
-import { ClobClient, OrderType, Side } from "@polymarket/clob-client";
-
-const client = await getClobClient();
-const response = await this.client.createAndPostOrder(
-    userOrder,
-    { tickSize, negRisk },
-    OrderType.GTC
-);
-```
-
-### Gamma API
-
-Fetches market data and token IDs:
-
-```typescript
-const url = `https://gamma-api.polymarket.com/markets/slug/${slug}`;
-const data = await response.json();
-const { outcomes, clobTokenIds, conditionId } = data;
-```
-
-## 📊 Monitoring & Logging
-
-The bot provides comprehensive logging:
-
-- **Trade Execution**: Logs all buy orders with details
-- **State Updates**: Records position changes and averages
-- **Redemption Activity**: Tracks redemption operations
-- **Error Handling**: Detailed error messages with stack traces
-- **Balance Updates**: Displays wallet balances after operations
-- **Metrics**: Hourly summary of bot performance
-
-Log files:
-- `logs/bot-{date}.log` - All console output (stdout/stderr)
-- `logs/pnl.log` - Realized PnL log (append-only)
-- `logs/balance.log` - Periodic balance snapshots
-
-Log levels:
-- `success`: Successful operations (green)
-- `info`: General operational messages (cyan)
-- `warning`: Non-critical issues (yellow)
-- `error`: Errors requiring attention (red)
-- `debug`: Debug messages (magenta, only if `DEBUG=true`)
-
-## 🐛 Bug Fixes Summary
-
-### Fixed Issues
-
-1. **Critical: Unprofitable Trade Prevention** (copytrade.ts)
-   - **Issue**: Bot would continue executing orders even when `projectedSumAvg > maxSumAvg`
-   - **Fix**: Uncommented `return null;` to properly prevent unprofitable trades
-   - **Impact**: Prevents losses from trades that would exceed profitability threshold
-
-2. **Type Safety Improvements** (copytrade.ts)
-   - **Issue**: Multiple `@ts-ignore` comments and `as any` casts
-   - **Fix**: 
-     - Properly typed `normalizeState` function parameter
-     - Fixed order property access with proper type checking
-     - Improved error handling types
-     - Fixed `cancelOrder` call type safety
-   - **Impact**: Better type safety, fewer runtime errors
-
-3. **Directory Creation** (holdings.ts, copytrade.ts)
-   - **Issue**: Data directory might not exist, causing file write failures
-   - **Fix**: 
-     - Added `ensureDataDirectory()` function in holdings.ts
-     - Added directory check in `saveState()` function
-   - **Impact**: Prevents file write errors on first run
-
-4. **API Response Typing** (copytrade.ts)
-   - **Issue**: API response typed as `any`
-   - **Fix**: Properly typed Gamma API response structure
-   - **Impact**: Better type safety and error detection
-
-## ⚠️ Risk Considerations
-
-1. **Market Risk**: Hedging strategy reduces directional risk but doesn't eliminate it
-2. **Liquidity Risk**: Orders may not fill completely, especially during volatility
-3. **Slippage**: Market orders execute at current market price (may differ from expected)
-4. **Gas Costs**: Each transaction incurs Polygon gas fees
-5. **API Limits**: Rate limiting may affect order execution
-6. **Timing Risk**: 15-minute markets have fixed resolution times
-7. **sumAvg Risk**: If sumAvg exceeds 0.98, positions may be unprofitable (now properly guarded)
-8. **State Persistence**: Bot state saved to disk (risk of corruption/loss)
-
-**Recommendations**:
-- Start with small position sizes
-- Monitor sumAvg regularly
-- Keep sufficient USDC balance for trading
-- Run redemption worker separately
-- Review logs regularly for errors
-- Test with small amounts before scaling
-
-## 🛠️ Development
-
-### Building
-
-```bash
-# Type checking
-npm run build
-
-# Run in development
-npm start
-```
-
-### Testing
-
-```bash
-# Test redemption (dry run)
-ts-node src/redeem-holdings.ts --dry-run
-
-# Test specific market
-ts-node src/auto-redeem.ts --check <conditionId>
-```
-
-## 📝 License
-
-ISC
-
-## 🤝 Contributing
-
-Contributions welcome! Please ensure:
-- Code follows TypeScript best practices
-- All functions are properly typed
-- Error handling is comprehensive
-- Logging is informative
-- Documentation is updated
-
-## 📞 Support
-
-For issues, questions, or contributions:
-- Review existing documentation
-- Check Polymarket API documentation
-- Review logs for error messages
+
+## Recording Video
+
+https://github.com/user-attachments/assets/b038aa3b-e42b-4f72-ac5d-a130cdb56a9f
+
+---
+## Running Bot Screenshot
+
+<img width="1796" height="937" alt="github-update-4-" src="https://github.com/user-attachments/assets/6b5f2782-a0f8-4333-9727-7699cd88c839" />
+
+<img width="1796" height="930" alt="github-update-5-" src="https://github.com/user-attachments/assets/13d4b57a-7268-4102-ba28-93017026884f" />
+
+---
+## Result Screenshot
+
+<img width="1384" height="895" alt="github-update-1" src="https://github.com/user-attachments/assets/e95f5fd9-df93-4d8f-be58-bee7568619c0" />
+
+<img width="1489" height="920" alt="github-update-3" src="https://github.com/user-attachments/assets/33237de3-cd03-4a27-9c78-13455b925572" />
+
+## Last 1 week Profit.
+
+<img width="793" height="806" alt="d1" src="https://github.com/user-attachments/assets/8ee8dcc9-dabe-4629-9e05-0a12270dbed9" />
+
+<img width="748" height="829" alt="d2" src="https://github.com/user-attachments/assets/b96b80c9-ec50-4120-a025-5aff0fc3b4d3" />
+
+<img width="772" height="743" alt="d3" src="https://github.com/user-attachments/assets/edd0286a-97ad-4c14-8420-7a6e73ea2a52" />
+
+<img width="794" height="697" alt="d4" src="https://github.com/user-attachments/assets/8795b273-4ecc-4e97-8094-8dd62ed32570" />
+
+<img width="790" height="887" alt="d5" src="https://github.com/user-attachments/assets/4d2b2887-2562-46ae-a5b4-20e1a3837bbe" />
+
+<img width="777" height="534" alt="d6" src="https://github.com/user-attachments/assets/fb9b61f2-e68a-43be-a595-50cb2b656713" />
+
+<img width="800" height="901" alt="d7" src="https://github.com/user-attachments/assets/06c67109-5400-4183-b7c4-6a043df8f1e5" />
+
+
+---
+## Telegram Trial Version Bot
+You can also test the bot directly on Telegram.
+
+<img width="457" height="273" alt="image" src="https://github.com/user-attachments/assets/8f3035da-67d2-4182-9e66-8959e0bb7574" />
+
+https://github.com/user-attachments/assets/4b9d029d-8e20-460b-af72-48412934293f
+
+https://t.me/benjamin_polymarket_trading_bot
+
+---
+# 2. Polymarket Copy Trading Bot (Introduction) 
+
+An open-source bot that automatically copies trades from top Polymarket traders to your wallet—so you can follow proven strategies 24/7 without watching the market yourself.
+
+Whether you're new to prediction markets or you want to scale your copy-trading across multiple wallets, this bot is built to be **simple to run**, **transparent**, and **under your control**.
+
+<img width="1100" height="726" alt="polymarket-copy-trading-bot" src="https://github.com/user-attachments/assets/82243a0b-f4ec-47f0-b7cd-326e0b0e2a27" />
+
+## Recording Video
+
+https://github.com/user-attachments/assets/1bf1babc-8aa6-4be0-b1ec-4e193f52b965
 
 ---
 
-**Disclaimer**: This software is provided as-is. Trading cryptocurrencies and prediction markets carries significant risk. Use at your own discretion and never trade more than you can afford to lose.
+# 3. Polymarket Arbitrage Bot (Lost token sniper) : (Introduction)
 
-**Version**: 1.0.0 (Fixed and Improved)
-**Last Updated**: 2024
+Polymarket Arbitrage Lost token Sniper bot automates a trading workflow on Polymarket short-interval markets (e.g., BTC/ETH/SOL/XRP 5-minute “up/down” epochs). It allocates capital into YES and NO positions, monitors order books in real time, and strategically exits the predicted losing side token before market resolution to optimize returns. The core edge lies in the model’s ability to accurately identify the losing token, enabling consistent profit capture when combined prices exceed $1.
+
+
+<img width="1082" height="718" alt="polymarket-lost token sniper1" src="https://github.com/user-attachments/assets/a664f94a-ea48-4080-a3e3-972e295d27d1" />
+
+## Result Screenshort
+<img width="804" height="447" alt="lost-sniper-1" src="https://github.com/user-attachments/assets/0582e172-fea6-4986-af78-4d8ddc4c85d9" />
+
+<img width="787" height="435" alt="lost-token-2" src="https://github.com/user-attachments/assets/d99dbdec-e47b-4b1a-b557-3dfcc46d6576" />
+
+<img width="887" height="568" alt="lost-sniper-2" src="https://github.com/user-attachments/assets/248087c4-faff-4d28-bb49-189009c78d89" />
+
+---
+
+# 4. Polymarket Arbitrage Bot (101 cents Sniper) : (Introduction)
+
+Polymarket Arbitrage 101 Bot is a professional Polymarket liquidity maker bot designed for short-interval (e.g., 5-minute) binary markets, automating the full cycle of splitting USDC into YES/NO tokens, placing balanced limit orders, and dynamically managing positions in real time. It targets a consistent edge by structuring trades so each YES/NO pair aims to return a combined value of 1.01 (101 cents) per cycle, while applying adaptive adjustments and risk controls as market conditions evolve. Built for multi-chain compatibility and continuous 24/7 operation, it supports live, dry-run, and paper trading modes for both production use and safe strategy testing.
+<img width="1124" height="742" alt="image" src="https://github.com/user-attachments/assets/73737f09-ba30-4955-85a2-057e84b0ef3d" />
+
+## Result Screenshort
+
+Sell ​​logic typically generates 0.01 to 0.02 cents per token pair.
+<img width="1002" height="905" alt="101bot" src="https://github.com/user-attachments/assets/cd6486fd-d95b-4359-ab82-a2d9ea8f67cc" />
+
+Risk management brings significant profits.
+<img width="786" height="605" alt="101bot2" src="https://github.com/user-attachments/assets/1981f487-894e-4cf5-a8d6-e75f1787f712" />
+
+## The most important point is that this bot never incurs a loss and only generates profit.
+
+This bot generated a profit of 101 to 102 cents per token pair from 1$ in the 5-minute crypto market and completed an average of 190 successful trades per day.
+
+If you invest $100, you can earn average $190 to $220 per day on one chain, and approximately $850 to $900 per day if you invest across four chains.
+
+---
+
+# 5. Polymarket Arbitrage Bot (Dual-side) : (Introduction)
+This Polymarket trading bot explores an automated volatility and probability arbitrage bot designed to identify pricing inefficiencies in prediction markets. Instead of predicting outcomes, the system exploits mispriced probabilities, market imbalances, and short-term volatility using quantitative models and automation. By combining high-frequency execution with strong risk management and hedging, the bot aims to capture small statistical edges and compound them over large trade volumes. 🚀
+
+
+<img width="1071" height="709" alt="image" src="https://github.com/user-attachments/assets/c40f12cc-a205-4091-a0f6-bdd443580943" />
+
+
+## Result Screenshot
+
+<img width="1011" height="355" alt="image" src="https://github.com/user-attachments/assets/19a2cdd8-8702-4bd4-b71f-eeee40fead6d" />
+
+---
+
+# 6. Polymarket Arbitrage Bot (Ladder Trading) : (Introduction)
+This bot does not speculate on market direction.
+Instead, it captures spread by selling both YES and NO outcome tokens at prices whose combined value exceeds $1.
+The strategy focuses on market making, not directional trading.
+<img width="1098" height="727" alt="image" src="https://github.com/user-attachments/assets/69f7c1d7-20c6-4b30-928b-5df382795c8a" />
+
+## Recording Video
+
+https://github.com/user-attachments/assets/7ba03ed4-f00d-4564-bf78-67c5159bb5c3
+
+---
+## Result Screenshot
+
+<img width="1803" height="861" alt="polymarket-trading-ladder-bot-pnl" src="https://github.com/user-attachments/assets/6b9c55c5-f822-46ff-b956-ec9939736653" />
+
+
+---
 
 
