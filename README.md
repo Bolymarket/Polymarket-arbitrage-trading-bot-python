@@ -160,6 +160,23 @@ https://github.com/user-attachments/assets/7ba03ed4-f00d-4564-bf78-67c5159bb5c3
 
 <img width="1803" height="861" alt="polymarket-trading-ladder-bot-pnl" src="https://github.com/user-attachments/assets/6b9c55c5-f822-46ff-b956-ec9939736653" />
 
+# 7. Polymarket Arbitrage Bot (Stair Trading) : (Introduction)
+The Stair Arbitrage Bot is designed to optimize position unwinding within Polymarket’s short-duration markets, with a particular focus on the final phase of each 5-minute interval. As markets approach resolution, the system executes a disciplined and liquidity-aware exit strategy across both YES and NO positions.
+
+Execution begins with the selective liquidation of the side offering the most favorable order book conditions, leveraging real-time depth and pricing signals to minimize market impact. Following this initial reduction in exposure, the bot systematically unwinds the opposing position—either through staged, price-sensitive increments or via a single coordinated execution—utilizing its proprietary Stair-based logic.
+
+This execution framework is underpinned by a robust risk management architecture and dynamic hedging mechanisms, enabling controlled exposure, reduced volatility, and consistent capital preservation. The overall design prioritizes efficient exits, minimized slippage, and stable, repeatable performance across varying market conditions.
+
+<img width="1024" height="681" alt="image" src="https://github.com/user-attachments/assets/e8da9cfc-1d3e-4100-a014-d45697c11deb" />
+
+
+## Result Screenshot
+
+<img width="1164" height="592" alt="polymarket-stair-bot" src="https://github.com/user-attachments/assets/049a6632-22cb-4469-9bfe-7d81fa713096" />
+
+---
+
+
 
 ---
 
