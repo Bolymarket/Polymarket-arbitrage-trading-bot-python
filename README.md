@@ -1,7 +1,19 @@
-# Polymarket-arbitrage-trading-bot-python
-polymarket arbitrage trading bot, Polymarket Trading Bot, Polymarket 5min market Trading Bot, Polymarket Automatic Trading Bot
+# Polymarket Arbitrage Trading Bot | V2 Ready
+Polymarket Trading Bot • 5-Min Market Bot • Fully Automated System
 
-A high-performance, automated trading system for [Polymarket](https://polymarket.com) prediction markets. Built in Python with real-time WebSocket streaming, gasless L2 execution, and a risk-management framework suited to short-term and high-frequency environments.
+A high-performance, automated trading system for Polymarket prediction markets — now fully upgraded for Polymarket V2.
+
+Built in Python, the system leverages real-time WebSocket data, gasless L2 execution, and an advanced risk-management framework optimized for short-term and high-frequency trading environments.
+
+🚀 V2 Upgrade Highlights
+- Full compatibility with the new V2 exchange architecture
+- Updated SDK/API integration
+- Support for new order structures & contract addresses
+- Integrated pUSD collateral flow (via USDC.e wrapping)
+- Improved execution reliability during high-volatility windows
+- Seamless handling of order cancellations and migration events
+
+Designed for arbitrage, directional strategies, and ultra-short-term markets (including 5-minute rounds), this bot framework provides a robust foundation for building and scaling automated trading strategies on Polymarket V2.
 
 
 
@@ -11,8 +23,7 @@ A high-performance, automated trading system for [Polymarket](https://polymarket
 
 ## Contact
 
-I have extensive experience developing automated trading bots for Polymarket and have built several profitable bots.
-I can build fully customized trading solutions based on your specific requirements, or share insights, strategies, and best practices from real-world development.
+I have extensive experience developing automated trading bots for Polymarket and have built several profitable bots. and updating all my bot for the polymarket v2 and new strategy for the polymarketv2. I can build fully customized trading solutions based on your specific requirements, or share insights, strategies, and best practices from real-world development.
 
 If you're interested in collaboration or have any questions, feel free to reach out.
 
