@@ -80,8 +80,55 @@ https://github.com/user-attachments/assets/b038aa3b-e42b-4f72-ac5d-a130cdb56a9f
 
 <img width="800" height="901" alt="d7" src="https://github.com/user-attachments/assets/06c67109-5400-4183-b7c4-6a043df8f1e5" />
 
+---
 
-# 2. Polymarket Copy Trading Bot (Introduction) 
+# 2. Polymarket BTC 5m Price field Bot
+
+A trading bot for Polymarket’s 5-minute BTC markets that exploits the relationship between time remaining and price deviation to identify high-probability opportunities. It uses position splitting and staged exits to 
+
+systematically capture inefficiencies, achieving a consistently high win rate under defined conditions.
+
+
+<img width="1024" height="683" alt="image" src="https://github.com/user-attachments/assets/64bb8b58-8599-4bfd-962f-bbb9489ce519" />
+
+## Result Screenshort
+
+
+<img width="785" height="383" alt="poly-field-bot3" src="https://github.com/user-attachments/assets/ec8e08ce-3018-4c4d-a221-5929d300a3a8" />
+
+<img width="964" height="488" alt="poly-field-bot2" src="https://github.com/user-attachments/assets/01591ade-2aa8-4254-bf4c-7b9396733656" />
+
+<img width="1062" height="706" alt="poly-field-bot1" src="https://github.com/user-attachments/assets/64cc69e2-7a77-4de8-8843-8920d20aa60e" />
+
+<img width="746" height="408" alt="poly-field-bot4" src="https://github.com/user-attachments/assets/35d8cab7-fabf-4036-8a80-b1926c1d0aa1" />
+
+
+---
+
+# 3. Polymarket Sticky Trading Bot
+
+Polymarket Sticky Trading Bot is an automated trading system that exploits short-term correlation between Bitcoin and related crypto prediction markets on Polymarket. It monitors BTC price momentum and high-confidence 
+
+market signals (e.g., YES > 0.9) to identify lagging markets, executing trades that capture the rapid convergence as probabilities realign.
+
+<img width="1020" height="677" alt="image" src="https://github.com/user-attachments/assets/41dcf35b-14dd-444d-9f87-fbb2ea6464da" />
+
+## Result Screenshot
+
+
+
+<img width="698" height="613" alt="sticky-bot-4" src="https://github.com/user-attachments/assets/a0d4588d-af31-4f4e-a342-457ce2121449" />
+
+<img width="793" height="681" alt="sticky-bot-1" src="https://github.com/user-attachments/assets/47822fd0-53f2-4629-a6f4-00052388bcc2" />
+
+<img width="722" height="647" alt="sticky-bot-2" src="https://github.com/user-attachments/assets/23b7bd9e-3bd4-4447-9aae-717f517da82a" />
+
+<img width="721" height="651" alt="sticky-bot-3" src="https://github.com/user-attachments/assets/492cf80d-6721-4421-a8b6-6e8ce54da751" />
+
+
+---
+
+# 4. Polymarket Copy Trading Bot (Introduction) 
 
 An open-source bot that automatically copies trades from top Polymarket traders to your wallet—so you can follow proven strategies 24/7 without watching the market yourself.
 
@@ -95,7 +142,7 @@ https://github.com/user-attachments/assets/1bf1babc-8aa6-4be0-b1ec-4e193f52b965
 
 ---
 
-# 3. Polymarket Arbitrage Bot (Lost token sniper) : (Introduction)
+# 5. Polymarket Arbitrage Bot (Lost token sniper) : (Introduction)
 
 Polymarket Arbitrage Lost token Sniper bot automates a trading workflow on Polymarket short-interval markets (e.g., BTC/ETH/SOL/XRP 5-minute “up/down” epochs). It allocates capital into YES and NO positions, monitors order books in real time, and strategically exits the predicted losing side token before market resolution to optimize returns. The core edge lies in the model’s ability to accurately identify the losing token, enabling consistent profit capture when combined prices exceed $1.
 
@@ -111,7 +158,7 @@ Polymarket Arbitrage Lost token Sniper bot automates a trading workflow on Polym
 
 ---
 
-# 4. Polymarket Arbitrage Bot (101 cents Sniper) : (Introduction)
+# 6. Polymarket Arbitrage Bot (101 cents Sniper) : (Introduction)
 
 Polymarket Arbitrage 101 Bot is a professional Polymarket liquidity maker bot designed for short-interval (e.g., 5-minute) binary markets, automating the full cycle of splitting USDC into YES/NO tokens, placing balanced limit orders, and dynamically managing positions in real time. It targets a consistent edge by structuring trades so each YES/NO pair aims to return a combined value of 1.01 (101 cents) per cycle, while applying adaptive adjustments and risk controls as market conditions evolve. Built for multi-chain compatibility and continuous 24/7 operation, it supports live, dry-run, and paper trading modes for both production use and safe strategy testing.
 <img width="1124" height="742" alt="image" src="https://github.com/user-attachments/assets/73737f09-ba30-4955-85a2-057e84b0ef3d" />
@@ -132,7 +179,7 @@ If you invest $100, you can earn average $190 to $220 per day on one chain, and 
 
 ---
 
-# 5. Polymarket Arbitrage Bot (Dual-side) : (Introduction)
+# 7. Polymarket Arbitrage Bot (Dual-side) : (Introduction)
 This Polymarket trading bot explores an automated volatility and probability arbitrage bot designed to identify pricing inefficiencies in prediction markets. Instead of predicting outcomes, the system exploits mispriced probabilities, market imbalances, and short-term volatility using quantitative models and automation. By combining high-frequency execution with strong risk management and hedging, the bot aims to capture small statistical edges and compound them over large trade volumes. 🚀
 
 
@@ -145,7 +192,7 @@ This Polymarket trading bot explores an automated volatility and probability arb
 
 ---
 
-# 6. Polymarket Arbitrage Bot (Ladder Trading) : (Introduction)
+# 8. Polymarket Arbitrage Bot (Ladder Trading) : (Introduction)
 This bot does not speculate on market direction.
 Instead, it captures spread by selling both YES and NO outcome tokens at prices whose combined value exceeds $1.
 The strategy focuses on market making, not directional trading.
@@ -160,7 +207,7 @@ https://github.com/user-attachments/assets/7ba03ed4-f00d-4564-bf78-67c5159bb5c3
 
 <img width="1803" height="861" alt="polymarket-trading-ladder-bot-pnl" src="https://github.com/user-attachments/assets/6b9c55c5-f822-46ff-b956-ec9939736653" />
 
-# 7. Polymarket Arbitrage Bot (Stair Trading) : (Introduction)
+# 9. Polymarket Arbitrage Bot (Stair Trading) : (Introduction)
 The Stair Arbitrage Bot is designed to optimize position unwinding within Polymarket’s short-duration markets, with a particular focus on the final phase of each 5-minute interval. As markets approach resolution, the system executes a disciplined and liquidity-aware exit strategy across both YES and NO positions.
 
 Execution begins with the selective liquidation of the side offering the most favorable order book conditions, leveraging real-time depth and pricing signals to minimize market impact. Following this initial reduction in exposure, the bot systematically unwinds the opposing position—either through staged, price-sensitive increments or via a single coordinated execution—utilizing its proprietary Stair-based logic.
