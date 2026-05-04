@@ -33,7 +33,8 @@ If you're interested in collaboration or have any questions, feel free to reach 
 | **Telegram** | [@BenjaminCup](https://t.me/BenjaminCup) |
 | **X (Twitter)** | [@benjaminccup](https://x.com/benjaminccup) |
 
-
+And this is my polymarket Account 
+[https://polymarket.com/@benjamin-rustyedge4](https://polymarket.com/@benjamin-rustyedge4)
 
 
 ## If you'd like, I can show you a profitable bot in action through a meeting.
