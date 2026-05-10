@@ -1,5 +1,5 @@
-# Polymarket Arbitrage Trading Bot | V2 Ready
-Polymarket Trading Bot • 5-Min Market Bot • Fully Automated System
+# Polymarket Arbitrage Trading Bot | Prediction Market Arbitrage Bot
+Polymarket Trading Bot • 5-Min Market Bot • Fully Prediction market Automated System
 
 A high-performance, automated trading system for Polymarket prediction markets — now fully upgraded for Polymarket V2.
 
