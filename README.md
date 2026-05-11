@@ -222,6 +222,20 @@ This execution framework is underpinned by a robust risk management architecture
 
 <img width="1164" height="592" alt="polymarket-stair-bot" src="https://github.com/user-attachments/assets/049a6632-22cb-4469-9bfe-7d81fa713096" />
 
+# 10. Polymarket Arbitrage Bot (Momentum Trading) : (Introduction)
+
+Polymarket Momentum Trading Bot is an automated trading system designed for short-duration crypto prediction markets, using real-time momentum analysis, price inefficiency detection, and probabilistic signals to execute high-precision trades. The bot includes advanced risk management, dynamic position sizing, and hedge logic to minimize downside risk while targeting stable and consistent profitability.
+
+<img width="1394" height="911" alt="image" src="https://github.com/user-attachments/assets/b6421b12-aa3d-4ae8-9d53-245c4ca1a024" />
+
+
+## Result Screenshot
+
+
+<img width="993" height="771" alt="image" src="https://github.com/user-attachments/assets/89221d44-abef-4d1b-8c06-470646120bad" />
+
+
+
 ---
 
 
